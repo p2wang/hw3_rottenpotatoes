@@ -15,7 +15,10 @@ end
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
   #  ensure that that e1 occurs before e2.
   #  page.content  is the entire content of the page as a string.
-  assert page.body.index(e1) < page.body.index(e2)
+  #assert page.body.index(e1) < page.body.index(e2)
+  if page.body.index(e1) > page.body.index(e2)
+	  assert false, "#{e2} comes after #{e1}"
+  end
   #assert false, "Unimplmemented"
 end
 
@@ -38,8 +41,14 @@ end
 
 Then /I should see (all|none) of the movies/ do |quantity|
 	if quantity.eql?("all")
-		assert page.all("table#movies tbody tr").size == Movie.all.size
+		#assert page.all("table#movies tbody tr").size == Movie.all.size
+		if page.all("table#movies tbody tr").size != Movie.all.size
+			assert false, "expected #{Movie.all.size} movies, but found #{page.all('table#movies tbody tr').size}"
+		end
 	else
-		assert page.all("table#movies tbody tr").size == 0
+		#assert page.all("table#movies tbody tr").size == 0
+		if page.all("table#movies tbody tr").size != 0
+			assert false, "expected 0 movies, but found #{page.all('table#movies tbody tr').size}"
+		end
 	end
 end
