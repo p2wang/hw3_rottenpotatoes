@@ -35,3 +35,11 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
 	end
   end
 end
+
+Then /I should see (all|none) of the movies/ do |quantity|
+	if quantity.eql?("all")
+		assert page.all("table#movies tbody tr").size == Movie.all.size
+	else
+		assert page.all("table#movies tbody tr").size == 0
+	end
+end
